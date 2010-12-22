@@ -1,0 +1,17 @@
+color evening
+set autoindent
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set textwidth=78
+set showmatch
+set ruler
+set nohls
+set incsearch
+set number
+set showcmd
+filetype plugin on
+
+" Highlight chars that go over the 80-column limit
+highlight OverLength ctermbg=red ctermfg=white guibg=red guifg=white
+match OverLength '\%81v.*'
