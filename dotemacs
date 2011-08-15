@@ -13,12 +13,16 @@
 (setq next-line-add-newlines nil)
 (setq blink-matching-paren t)
 (setq blink-matching-delay .25)
-(global-font-lock-mode 1 t)
+
 
 ;; (blink-cursor-mode 0)
 (tool-bar-mode -1)
 (tooltip-mode -1)
 (set-scroll-bar-mode 'nil)
+
+;; Auto refresh changed files in docview mode
+;; Helpful while editing TeX and having PDF open in emacs
+(add-hook 'doc-view-mode-hook 'auto-revert-mode) 
 
 ;; ----------------------
 ;; Auto compressed files handling
@@ -270,4 +274,15 @@
 (require 'ido)
   (ido-mode t)
   (setq ido-enable-flex-matching t) ;; enable fuzzy matching
-
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(doc-view-continuous t))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
