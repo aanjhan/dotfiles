@@ -166,7 +166,7 @@
 
 ;; 'y' for 'yes', 'n' for 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
-
+(setq-default fill-column 78)
 (setq query-replace-highlight t)
 (setq search-highlight t)
 
@@ -265,6 +265,7 @@
 (setq-default TeX-master nil)
 (setq TeX-insert-braces t)
 (setq reftex-plug-into-AUCTeX t)
+(setq TeX-PDF-mode t)
 
 ;;reftex
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
@@ -286,3 +287,5 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
+
+
