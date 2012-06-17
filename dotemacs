@@ -1,16 +1,13 @@
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'solarized-dark t)
+
 ;; -----------------------------
 ;; General Display Customisation
 ;; -----------------------------
-(add-to-list 'load-path "~/.emacs.d/plugins/")
-(add-to-list 'load-path "~/.emacs.d/plugins/python-mode.el-6.0.4/")
-;;(add-to-list 'load-path "~/.emacs.d/plugins/auto-complete-1.3.1/")
-
-
 (setq inhibit-startup-message t)
 (setq make-backup-files nil) ; Don't want any backup files 
 (setq auto-save-default nil) ; stop creating those #auto-save# files
 (setq font-lock-maximum-decoration t)
-(setq visible-bell t)
 (setq require-final-newline t)
 (setq resize-minibuffer-frame t)
 (setq column-number-mode t)
@@ -18,16 +15,26 @@
 (setq next-line-add-newlines nil)
 (setq blink-matching-paren t)
 (setq blink-matching-delay .25)
-
-
-;; (blink-cursor-mode 0)
+(setq-default fill-column 78)
 (tool-bar-mode -1)
-(tooltip-mode -1)
-(set-scroll-bar-mode 'nil)
+(global-hl-line-mode 1)
+(setq ring-bell-function 'ignore)
 
-;; Auto refresh changed files in docview mode
-;; Helpful while editing TeX and having PDF open in emacs
-(add-hook 'doc-view-mode-hook 'auto-revert-mode) 
+
+;; --------------
+;; Fullscreen mode
+;; ---------------
+(defun toggle-fullscreen (&optional f)
+   (interactive)
+   (let ((current-value (frame-parameter nil 'fullscreen)))
+     (set-frame-parameter nil 'fullscreen
+                          (if (equal 'fullboth current-value)
+                              (if (boundp 'old-fullscreen) old-fullscreen  nil)
+                            (progn (setq old-fullscreen current-value)
+                                   'fullboth)))))
+ 
+(global-set-key [f11] 'toggle-fullscreen)
+
 
 ;; ----------------------
 ;; Auto compressed files handling
@@ -35,27 +42,10 @@
 (auto-compression-mode 1)
 
 
-;; ----------------------
-;; Final newline handling
-;; ----------------------
-(setq require-final-newline t)
-(setq next-line-extends-end-of-buffer nil)
-(setq next-line-add-newlines nil)
-
 ;; ----------------------------
 ;; CUA Mode On during start up
 ;; ----------------------------
 (cua-mode "ON")
-
-;; ;; -----------
-;; ;; Frame Setup
-;; ;; -----------
-;; (setq initial-frame-alist '((top . 55)
-;;                             (left . 570)
-;;                             (width . 85)
-;;                             (height . 40)))
-;; (setq frame-title-format "%b")
-;; (setq icon-title-format  "%b")
 
 ;; ---------
 ;; TAB Setup
@@ -71,84 +61,6 @@
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (setq ibuffer-default-sorting-mode 'major-mode)
 
-;; --------------
-;; Fullscreen mode
-;; ---------------
-(defun toggle-fullscreen (&optional f)
-  (interactive)
-  (let ((current-value (frame-parameter nil 'fullscreen)))
-    (set-frame-parameter nil 'fullscreen
-                         (if (equal 'fullboth current-value)
-                             (if (boundp 'old-fullscreen) old-fullscreen nil)
-                           (progn (setq old-fullscreen current-value)
-                                  'fullboth)))))
-
-(global-set-key [f11] 'toggle-fullscreen)
-
-;; -------------
-;; Custom colors
-;; -------------
-(set-default-font "Monospace 11")
-(require 'color-theme)
-
-
-;;-------------
-;; Peadrop's Function
-;; -------------
-(defun my-color-theme-dark ()
-  (interactive)
-  ;; highlight the line where the cursor is
-  (global-hl-line-mode t)
-  (set-face-background 'hl-line "gray20")
-  (set-face-foreground 'hl-line nil)
-  ;; main theme
-  (color-theme-install
-   '(my-color-theme-dark
-     ((background-color . "black")
-      (foreground-color . "white")
-      (cursor-color . "white")
-      (mouse-color . "white")
-      (background-mode . dark))
-     (default ((t (nil))))
-     (bold ((t (:bold t))))
-     (bold-italic ((t (:italic t :bold t))))
-     (italic ((t (:italic t))))
-     ;; orange: #E67321
-     ;; purple: #8722c9
-     ;; green: #00b200
-     ;; blue: #398EE6
-     (font-lock-builtin-face ((t (:bold t :foreground "#E67321"))))
-     (font-lock-comment-face ((t (:italic t :bold t :foreground "#00b200"))))
-     (font-lock-constant-face ((t (:bold t :foreground "#398EE6"))))
-     (font-lock-doc-string-face ((t (:bold t :foreground "#8722c9"))))
-     (font-lock-function-name-face ((t (:foreground "LightSkyBlue"))))
-     (font-lock-keyword-face ((t (:bold t :foreground "#E67321"))))
-     (font-lock-preprocessor-face ((t (:foreground "#8722c9" :bold t))))
-     (font-lock-reference-face ((t (:foreground "#E67321"))))
-     (font-lock-string-face ((t (:bold t :foreground "#8722c9"))))
-     (font-lock-type-face ((t (:bold t :foreground "#398EE6"))))
-     (font-lock-variable-name-face ((t (:italic t :bold t :foreground "magenta3"))))
-     (font-lock-warning-face ((t (:bold t :foreground "orange"))))
-     (py-builtins-face ((t (:bold t :foreground "#398EE6"))))
-     (py-pseudo-keyword-face ((t (:bold t :foreground "#398EE6"))))
-     (rst-level-1-face ((t (:bold t :foreground "snow1"))))
-     (rst-level-2-face ((t (:bold t :foreground "snow2"))))
-     (rst-level-3-face ((t (:bold t :foreground "snow3"))))
-     (rst-level-4-face ((t (:bold t :foreground "snow4"))))
-     (erc-action-face ((t (nil))))
-     (erc-notice-face ((t (:foreground "#878899"))))
-     (erc-bold-face ((t (:bold t :weight bold))))
-     (erc-command-indicator-face ((t (:bold t :weight bold))))
-     (erc-dangerous-host-face ((t (:foreground "orange"))))
-     (erc-default-face ((t (nil))))
-     (erc-timestamp-face ((t (:bold nil :foreground "gray45" :weight normal))))
-     (erc-underline-face ((t (:underline t))))
-     (erc-prompt-face ((t (:bold t :foreground "GoldenRod3" :weight bold))))
-     (trailing-whitespace ((t (:background "gray30")))))))
-
-
-(if window-system
-    (my-color-theme-dark))
 
 
 ;; -----------------
@@ -171,7 +83,7 @@
 
 ;; 'y' for 'yes', 'n' for 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
-(setq-default fill-column 78)
+
 (setq query-replace-highlight t)
 (setq search-highlight t)
 
@@ -207,52 +119,12 @@
 (add-hook 'before-save-hook 'time-stamp)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-
-;; ---
-;; C++
-;; ---
-(c-add-style "my-style" 
-             '("stroustrup"
-               (indent-tabs-mode . nil) ;; use spaces rather than tabs
-               (c-basic-offset . 4) ;; indent by four spaces
-               (c-offsets-alist . ((inline-open . 0) ;; custom indentation rules
-                                   (brace-list-open . 0)
-                                   (statement-case-open . +)))))
-
-(defun my-c++-mode-hook ()
-  (c-set-style "my-style") ;; use my-style defined above
-  (auto-fill-mode)
-  (setq c-auto-newline nil)
-  (c-toggle-auto-hungry-state 1))
-
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
-
-;;--------------------------------------------------------------------
-;; Lines enabling gnuplot-mode
-
-;; move the files gnuplot.el to someplace in your lisp load-path or
-;; use a line like
-  (setq load-path (append (list "/home/tuxmaniac/elisp/gnuplot-mode.0.6.0/") load-path))
-
-;; these lines enable the use of gnuplot mode
-  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
-  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
-
-;; this line automatically causes all files with the .gp extension to
-;; be loaded into gnuplot mode
-  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
-
-;; This line binds the function-9 key so that it opens a buffer into
-;; gnuplot mode 
-  (global-set-key [(f9)] 'gnuplot-send-file-to-gnuplot)
-;; end of line for Gnuplot-Mode
-;;--------------------------------------------------------------------
-
-
-;;-- tramp mode for remote file handling
-;;-------------------------------------
-(require 'tramp)
-(setq tramp-default-method "scp")
+;; ----------------
+;; IDO Mode enable
+;; ----------------
+(setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode 1)
 
 
 ;;-- clear eshell buffer
@@ -262,53 +134,20 @@
   (let ((inhibit-read-only t))
     (erase-buffer)))
 
-
-;; AucTex
-(require 'tex-site)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-(setq TeX-insert-braces t)
-(setq reftex-plug-into-AUCTeX t)
-(setq TeX-PDF-mode t)
-
-;;reftex
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
-(add-hook 'lateX-mode-hook 'turn-on-reftex)   ; with Emacs LaTeX mode
-
-;; Enable IDO
-(require 'ido)
-  (ido-mode t)
-  (setq ido-enable-flex-matching t) ;; enable fuzzy matching
+;; YAS-Snippets
+(add-to-list 'load-path "~/.emacs.d/plugins/yasnippet-0.6.1c")
+(require 'yasnippet) ;; not yasnippet-bundle
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/plugins/yasnippet-0.6.1c/snippets")
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(doc-view-continuous t))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("72cc9ae08503b8e977801c6d6ec17043b55313cda34bcf0e6921f2f04cf2da56" default))))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
-
-;;(require 'python-mode)
-;;(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-;;(require 'ipython)
-
-
-;; For pair matching
-(autoload 'autopair-global-mode "autopair" nil t)
-(autopair-global-mode)
-(add-hook 'lisp-mode-hook
-          #'(lambda () (setq autopair-dont-activate t)))
-
-
-;;(require 'anything)
-;;(require 'anything-ipython)
-;;(define-key py-mode-map (kbd “M-”) ‘anything-ipython-complete)
-;;(define-key py-shell-map (kbd “M-”) ‘anything-ipython-complete)
-;;(define-key py-mode-map (kbd “C-c M”) ‘anything-ipython-import-modules-from-buffer)'(length initial-pattern)))
-;;(when (require 'anything-show-completion nil t)
-;;   (use-anything-show-completion 'anything-ipython-complete
