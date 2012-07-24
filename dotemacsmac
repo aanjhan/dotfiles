@@ -1,0 +1,171 @@
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'solarized-dark t)
+
+;; make emacs see the PATH variable what bash sees
+
+(getenv "PATH")
+ (setenv "PATH"
+(concat
+ "/usr/texbin" ":"
+
+(getenv "PATH")))
+
+;; -----------------------------
+;; General Display Customisation
+;; -----------------------------
+(setq inhibit-startup-message t)
+(setq make-backup-files nil) ; Don't want any backup files 
+(setq auto-save-default nil) ; stop creating those #auto-save# files
+(setq font-lock-maximum-decoration t)
+(setq require-final-newline t)
+(setq resize-minibuffer-frame t)
+(setq column-number-mode t)
+(setq-default transient-mark-mode t)
+(setq next-line-add-newlines nil)
+(setq blink-matching-paren t)
+(setq blink-matching-delay .25)
+(setq-default fill-column 78)
+(tool-bar-mode -1)
+(global-hl-line-mode 1)
+(setq ring-bell-function 'ignore)
+
+
+;; --------------
+;; Fullscreen mode
+;; ---------------
+(defun toggle-fullscreen (&optional f)
+   (interactive)
+   (let ((current-value (frame-parameter nil 'fullscreen)))
+     (set-frame-parameter nil 'fullscreen
+                          (if (equal 'fullboth current-value)
+                              (if (boundp 'old-fullscreen) old-fullscreen  nil)
+                            (progn (setq old-fullscreen current-value)
+                                   'fullboth)))))
+ 
+(global-set-key [f11] 'toggle-fullscreen)
+
+
+;; ----------------------
+;; Auto compressed files handling
+;; ----------------------
+(auto-compression-mode 1)
+
+
+;; ----------------------------
+;; CUA Mode On during start up
+;; ----------------------------
+(cua-mode "ON")
+
+;; ---------
+;; TAB Setup
+;; ---------
+(setq-default tab-width 2
+	      standard-indent 2
+	      indent-tabs-mode nil)
+
+;; -------------
+;; Ibuffer mode
+;;--------------
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(autoload 'ibuffer "ibuffer" "List buffers." t)
+(setq ibuffer-default-sorting-mode 'major-mode)
+
+
+
+;; -----------------
+;; Misc key mappings
+;; -----------------
+(global-set-key [f1] 'search-forward)
+(global-set-key [f3] 'search-backward)
+(global-set-key [f2] 'replace-string)
+(global-set-key [f4] 'set-justification-full) ;JUSTIFY
+;; (global-set-key [f5] 'set-mark-command) ;MARK
+(global-set-key [f6] 'kill-ring-save)   ;COPY
+(global-set-key [f7] 'yank)             ;PASTE
+(global-set-key [f8] 'kill-region)      ;DELETE
+(global-set-key [f9] 'save-buffer)      ;SAVE
+(global-set-key [C-f7] 'compile)        ;COMPILE
+(global-set-key [C-f1] 'eshell)         ;ESHELL
+(global-set-key "\C-ca" 'auto-fill-mode)
+(global-set-key "\C-cw" 'woman)         ;WOMAN
+;; (Global-set-key "\C-cs" 'run-scheme)  ;MZSCHEME
+
+;; 'y' for 'yes', 'n' for 'no'
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(setq query-replace-highlight t)
+(setq search-highlight t)
+
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+;; -----------------
+;; Insert time stamp
+;; -----------------
+(defun insert-date ()
+  "Insert current date and time."
+  (interactive "*")
+  (insert (current-time-string)))
+
+;; ----------------------------------------
+;; Kill current buffer without confirmation
+;; ----------------------------------------
+(global-set-key "\C-xk" 'kill-current-buffer)
+(defun kill-current-buffer ()
+  "Kill the current buffer, without confirmation."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+;; ------------
+;; General Info
+;; ------------
+(setq user-mail-address "aanjhan@gmail.com")
+(setq user-full-name "Aanjhan Ranganathan")
+
+
+;; --------------------
+;; Several useful hooks
+;; --------------------
+(add-hook 'before-save-hook 'time-stamp)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;; ----------------
+;; IDO Mode enable
+;; ----------------
+(setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+
+
+;;-- clear eshell buffer
+(defun eshell/clear ()
+  "04Dec2001 - sailor, to clear the eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
+
+;; YAS-Snippets
+(add-to-list 'load-path "~/.emacs.d/plugins/yasnippet-0.6.1c")
+(require 'yasnippet) ;; not yasnippet-bundle
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/plugins/yasnippet-0.6.1c/snippets")
+
+;; Marmalade repos
+(require 'package)
+(add-to-list 'package-archives 
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("72cc9ae08503b8e977801c6d6ec17043b55313cda34bcf0e6921f2f04cf2da56" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
