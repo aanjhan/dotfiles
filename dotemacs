@@ -1,5 +1,12 @@
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'solarized-dark t)
+;; make emacs see the PATH variable what bash sees
+
+(getenv "PATH")
+ (setenv "PATH"
+(concat
+ "/usr/texbin" ":"
+
+(getenv "PATH")))
+
 
 ;; -----------------------------
 ;; General Display Customisation
@@ -17,6 +24,7 @@
 (setq blink-matching-delay .25)
 (setq-default fill-column 78)
 (tool-bar-mode -1)
+(menu-bar-mode 1)
 (global-hl-line-mode 1)
 (setq ring-bell-function 'ignore)
 
@@ -119,13 +127,19 @@
 (add-hook 'before-save-hook 'time-stamp)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
+
+;; tex hooks
+(setq TeX-auto-save t) 
+(setq TeX-parse-self t) 
+(setq TeX-save-query nil)
+(setq TeX-PDF-mode t)
+
 ;; ----------------
 ;; IDO Mode enable
 ;; ----------------
 (setq ido-enable-flex-matching t)
   (setq ido-everywhere t)
   (ido-mode 1)
-
 
 ;;-- clear eshell buffer
 (defun eshell/clear ()
@@ -134,20 +148,15 @@
   (let ((inhibit-read-only t))
     (erase-buffer)))
 
-;; YAS-Snippets
-(add-to-list 'load-path "~/.emacs.d/plugins/yasnippet-0.6.1c")
-(require 'yasnippet) ;; not yasnippet-bundle
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/plugins/yasnippet-0.6.1c/snippets")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("72cc9ae08503b8e977801c6d6ec17043b55313cda34bcf0e6921f2f04cf2da56" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; Marmalade repos
+(require 'package)
+(add-to-list 'package-archives 
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+
+;; load theme
+;;(add-to-list 'custom-theme-load-path "/home/aanjhan/.emacs.d/elpa/zen/")
+;;(load-theme 'zen-and-art t)
+(load-theme 'twilight t)
