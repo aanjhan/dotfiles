@@ -78,7 +78,7 @@
 (global-set-key [f3] 'search-backward)
 (global-set-key [f2] 'replace-string)
 (global-set-key [f4] 'set-justification-full) ;JUSTIFY
-;; (global-set-key [f5] 'set-mark-command) ;MARK
+(global-set-key [f5] 'set-mark-command) ;MARK
 (global-set-key [f6] 'kill-ring-save)   ;COPY
 (global-set-key [f7] 'yank)             ;PASTE
 (global-set-key [f8] 'kill-region)      ;DELETE
@@ -87,7 +87,6 @@
 (global-set-key [C-f1] 'eshell)         ;ESHELL
 (global-set-key "\C-ca" 'auto-fill-mode)
 (global-set-key "\C-cw" 'woman)         ;WOMAN
-;; (Global-set-key "\C-cs" 'run-scheme)  ;MZSCHEME
 
 ;; 'y' for 'yes', 'n' for 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -142,11 +141,13 @@
   (ido-mode 1)
 
 ;;-- clear eshell buffer
-(defun eshell/clear ()
-  "04Dec2001 - sailor, to clear the eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)))
+;; (defun eshell/clear ()
+;;   "04Dec2001 - sailor, to clear the eshell buffer."
+;;   (interactive)
+;;   (let ((inhibit-read-only t))
+;;     (erase-buffer)))
+
+(require 'hippie-exp)
 
 ;; Marmalade repos
 (require 'package)
