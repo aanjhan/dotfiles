@@ -78,7 +78,7 @@
 (global-set-key [f3] 'search-backward)
 (global-set-key [f2] 'replace-string)
 (global-set-key [f4] 'set-justification-full) ;JUSTIFY
-;; (global-set-key [f5] 'set-mark-command) ;MARK
+(global-set-key [f5] 'set-mark-command) ;MARK
 (global-set-key [f6] 'kill-ring-save)   ;COPY
 (global-set-key [f7] 'yank)             ;PASTE
 (global-set-key [f8] 'kill-region)      ;DELETE
@@ -154,10 +154,14 @@
 
 ;;-- clear eshell buffer
 (defun eshell/clear ()
-  "04Dec2001 - sailor, to clear the eshell buffer."
   (interactive)
   (let ((inhibit-read-only t))
     (erase-buffer)))
+
+;; only required for linux machines.
+(if (eq system-type 'gnu/linux)
+    (require 'hippie-exp)
+  )
 
 ;; Marmalade repos
 (require 'package)

@@ -88,6 +88,17 @@
 (global-set-key "\C-ca" 'auto-fill-mode)
 (global-set-key "\C-cw" 'woman)         ;WOMAN
 
+;; distracton free centre editing
+(global-set-key [C-f10]
+     (lambda ()
+     (interactive)
+     (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 30 30)))
+
+(global-set-key [C-f9]
+     (lambda ()
+     (interactive)
+     (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 0 0)))
+
 ;; 'y' for 'yes', 'n' for 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -141,13 +152,15 @@
   (ido-mode 1)
 
 ;;-- clear eshell buffer
-;; (defun eshell/clear ()
-;;   "04Dec2001 - sailor, to clear the eshell buffer."
-;;   (interactive)
-;;   (let ((inhibit-read-only t))
-;;     (erase-buffer)))
+(defun eshell/clear ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
 
-(require 'hippie-exp)
+;; only required for linux machines.
+(if (eq system-type 'gnu/linux)
+    (require 'hippie-exp)
+  )
 
 ;; Marmalade repos
 (require 'package)
