@@ -162,6 +162,15 @@
     (require 'hippie-exp)
   )
 
+
+;; psvn for svn mode.
+(require 'psvn)
+(eval-after-load "psvn"
+  '(progn
+     (setq svn-status-default-diff-arguments '("--diff-cmd" "diff" ))))
+
+
+
 ;; Marmalade repos
 (require 'package)
 (add-to-list 'package-archives 
