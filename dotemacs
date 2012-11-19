@@ -7,6 +7,7 @@
 
 (getenv "PATH")))
 
+(add-to-list 'load-path "~/.emacs.d/elpa")
 
 ;; -----------------------------
 ;; General Display Customisation
@@ -167,7 +168,8 @@
 (require 'psvn)
 (eval-after-load "psvn"
   '(progn
-     (setq svn-status-default-diff-arguments '("--diff-cmd" "diff" ))))
+     (setq svn-status-default-diff-arguments '("--diff-cmd" "colordiff" ))))
+(setq vc-svn-diff-switches '("-x --ignore-eol-style" "-x -w"))
 
 
 
