@@ -88,6 +88,8 @@
 (global-set-key [C-f1] 'eshell)         ;ESHELL
 (global-set-key "\C-ca" 'auto-fill-mode)
 (global-set-key "\C-cw" 'woman)         ;WOMAN
+(global-set-key [down-mouse-3] 'imenu)  ;imenu for latex headings
+
 
 ;; distracton free centre editing
 (global-set-key [C-f10]
@@ -108,14 +110,6 @@
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-;; -----------------
-;; Insert time stamp
-;; -----------------
-(defun insert-date ()
-  "Insert current date and time."
-  (interactive "*")
-  (insert (current-time-string)))
-
 ;; ----------------------------------------
 ;; Kill current buffer without confirmation
 ;; ----------------------------------------
@@ -132,18 +126,38 @@
 (setq user-full-name "Aanjhan Ranganathan")
 
 
-;; --------------------
-;; Several useful hooks
-;; --------------------
-(add-hook 'before-save-hook 'time-stamp)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-
-
 ;; tex hooks
 (setq TeX-auto-save t) 
 (setq TeX-parse-self t) 
 (setq TeX-save-query nil)
 (setq TeX-PDF-mode t)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+(add-hook 'reftex-load-hook 'imenu-add-menubar-index)
+(add-hook 'reftex-mode-hook 'imenu-add-menubar-index)
+
+;; insert the tilde in front of cite automatically
+(setq reftex-format-cite-function 
+          '(lambda (key fmt)
+	     (let ((cite (replace-regexp-in-string "%l" key fmt)))
+	       (if (or (= ?~ (string-to-char fmt))
+		       (member (preceding-char) '(?\ ?\t ?\n ?~)))
+	           cite
+	         (concat "~" cite)))))
+
+;; rubber and emacs
+(eval-after-load "tex"
+  '(progn
+     (add-to-list 'TeX-expand-list
+                  '("%(RubberPDF)"
+                    (lambda ()
+                      (if
+                          (not TeX-PDF-mode)
+                          ""
+                        "--pdf"))))
+     (add-to-list 'TeX-command-list
+                '("Rubber" "rubber %(RubberPDF) %t" TeX-run-shell nil t) t)))
+
 
 ;; ----------------
 ;; IDO Mode enable
@@ -181,7 +195,10 @@
 (package-initialize)
 
 
+;; Python mode
+ (autoload 'python-mode "python-mode" "Python Mode." t)
+ (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+ (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
 ;; load theme
-;;(add-to-list 'custom-theme-load-path "/home/aanjhan/.emacs.d/elpa/zen/")
-;;(load-theme 'zen-and-art t)
 (load-theme 'twilight t)
