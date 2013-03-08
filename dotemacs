@@ -158,6 +158,20 @@
      (add-to-list 'TeX-command-list
                 '("Rubber" "rubber %(RubberPDF) %t" TeX-run-shell nil t) t)))
 
+;; keymapping for latex compilation and rubber
+(add-hook 'TeX-mode-hook
+          '(lambda ()
+            (define-key TeX-mode-map (kbd "<f9>")
+              (lambda ()
+                (interactive)
+                (save-buffer)
+                (TeX-command-menu "Rubber")))
+            (define-key TeX-mode-map (kbd "<f12>")
+              (lambda ()
+                (interactive)
+                (TeX-view)
+                [return]))))
+
 
 ;; ----------------
 ;; IDO Mode enable
