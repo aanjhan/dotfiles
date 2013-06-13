@@ -126,6 +126,9 @@
 (setq user-full-name "Aanjhan Ranganathan")
 
 
+;; Doc-view mode auto revert (update when file changes)
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
 ;; tex hooks
 (setq TeX-auto-save t) 
 (setq TeX-parse-self t) 
