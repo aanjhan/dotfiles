@@ -23,10 +23,8 @@
 (setq next-line-add-newlines nil)
 (setq blink-matching-paren t)
 (setq blink-matching-delay .25)
-(setq-default fill-column 78)
+(setq-default fill-column 80)
 (tool-bar-mode -1)
-(menu-bar-mode 1)
-(global-hl-line-mode 1)
 (setq ring-bell-function 'ignore)
 
 
@@ -194,7 +192,6 @@
     (require 'hippie-exp)
   )
 
-
 ;; psvn for svn mode.
 (require 'psvn)
 (eval-after-load "psvn"
@@ -202,6 +199,36 @@
      (setq svn-status-default-diff-arguments '("--diff-cmd" "colordiff" ))))
 (setq vc-svn-diff-switches '("-x --ignore-eol-style" "-x -w"))
 
+;; Python mode
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
+;; use IPython
+(setq-default py-shell-name "ipython")
+(setq-default py-which-bufname "IPython")
+; use the wx backend, for both mayavi and matplotlib
+(setq py-python-command-args
+  '("--gui=wx" "--pylab=wx" "-colors" "Linux"))
+(setq py-force-py-shell-name-p t)
+
+; switch to the interpreter after executing code
+(setq py-shell-switch-buffers-on-execute-p t)
+(setq py-switch-buffers-on-execute-p t)
+; don't split windows
+(setq py-split-windows-on-execute-p nil)
+; try to automagically figure out indentation
+(setq py-smart-indentation t)
+
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+(autoload 'pymacs-autoload "pymacs")
+
+;; ropemacs
+(pymacs-load "ropemacs" "rope-")
 
 
 ;; Marmalade repos
@@ -210,12 +237,6 @@
     '("marmalade" .
       "http://marmalade-repo.org/packages/"))
 (package-initialize)
-
-
-;; Python mode
- (autoload 'python-mode "python-mode" "Python Mode." t)
- (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
- (add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
 ;; load theme
 (load-theme 'twilight t)
