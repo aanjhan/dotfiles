@@ -24,11 +24,8 @@
 (setq blink-matching-delay .25)
 (setq-default fill-column 80)
 (tool-bar-mode -1)
-<<<<<<< HEAD
-=======
 (menu-bar-mode t)
 (global-hl-line-mode 1)
->>>>>>> 18f18c484d396912ef4aaf4637af2d680f090977
 (setq ring-bell-function 'ignore)
 
 
@@ -229,9 +226,6 @@
       "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-<<<<<<< HEAD
-=======
-
 ;; Python mode
  (autoload 'python-mode "python-mode" "Python Mode." t)
  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
@@ -243,8 +237,6 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-
->>>>>>> 18f18c484d396912ef4aaf4637af2d680f090977
 ;; load theme
 (load-theme 'twilight t)
 
