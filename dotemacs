@@ -1,11 +1,10 @@
 ;; make emacs see the PATH variable what bash sees
 
-(getenv "PATH")
- (setenv "PATH"
-(concat
- "/usr/texbin" ":"
+ ;; (getenv "PATH")
+ ;; (setenv "PATH"
+ ;; (concat "/usr/texbin" ":"
 
-(getenv "PATH")))
+ ;; (getenv "PATH")))
 
 (add-to-list 'load-path "~/.emacs.d/elpa")
 
@@ -25,22 +24,17 @@
 (setq blink-matching-delay .25)
 (setq-default fill-column 80)
 (tool-bar-mode -1)
+<<<<<<< HEAD
+=======
+(menu-bar-mode t)
+(global-hl-line-mode 1)
+>>>>>>> 18f18c484d396912ef4aaf4637af2d680f090977
 (setq ring-bell-function 'ignore)
 
 
-;; --------------
-;; Fullscreen mode
-;; ---------------
-(defun toggle-fullscreen (&optional f)
-   (interactive)
-   (let ((current-value (frame-parameter nil 'fullscreen)))
-     (set-frame-parameter nil 'fullscreen
-                          (if (equal 'fullboth current-value)
-                              (if (boundp 'old-fullscreen) old-fullscreen  nil)
-                            (progn (setq old-fullscreen current-value)
-                                   'fullboth)))))
- 
-(global-set-key [f11] 'toggle-fullscreen)
+
+;; toggle full screen (works on emacs 24.3 for mac os x) 
+(global-set-key [C-f11] 'toggle-fullscreen)
 
 
 ;; ----------------------
@@ -123,9 +117,6 @@
 (setq user-mail-address "aanjhan@gmail.com")
 (setq user-full-name "Aanjhan Ranganathan")
 
-
-;; Doc-view mode auto revert (update when file changes)
-(add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 ;; tex hooks
 (setq TeX-auto-save t) 
@@ -238,5 +229,22 @@
       "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
+<<<<<<< HEAD
+=======
+
+;; Python mode
+ (autoload 'python-mode "python-mode" "Python Mode." t)
+ (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+ (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
+
+;; copy env path
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
+
+>>>>>>> 18f18c484d396912ef4aaf4637af2d680f090977
 ;; load theme
 (load-theme 'twilight t)
+
