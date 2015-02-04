@@ -1,4 +1,4 @@
-color evening
+color default 
 set autoindent
 set smartindent
 set tabstop=2
@@ -13,5 +13,5 @@ set showcmd
 filetype plugin on
 
 " Highlight chars that go over the 80-column limit
-highlight OverLength ctermbg=red ctermfg=white guibg=red guifg=white
-match OverLength '\%81v.*'
+" highlight OverLength ctermbg=red ctermfg=white guibg=red guifg=white
+" match OverLength '\%81v.*'
