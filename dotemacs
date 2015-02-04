@@ -7,10 +7,15 @@
  ;; (getenv "PATH")))
 
 (add-to-list 'load-path "~/.emacs.d/elpa")
+;; bug patch for yas snippet loading until 24.3 gets to ubuntu
+(defalias 'cl-set-getf 'cl--set-getf)
 
 ;; -----------------------------
 ;; General Display Customisation
 ;; -----------------------------
+(menu-bar-mode 1)
+(global-hl-line-mode 1)
+(setq ring-bell-function 'ignore)
 (setq inhibit-startup-message t)
 (setq make-backup-files nil) ; Don't want any backup files 
 (setq auto-save-default nil) ; stop creating those #auto-save# files
@@ -23,10 +28,6 @@
 (setq blink-matching-paren t)
 (setq blink-matching-delay .25)
 (setq-default fill-column 80)
-(tool-bar-mode -1)
-(menu-bar-mode t)
-(global-hl-line-mode 1)
-(setq ring-bell-function 'ignore)
 
 
 
@@ -53,13 +54,16 @@
 	      indent-tabs-mode nil)
 
 ;; -------------
+;; emacs cursor type
+;; --------------
+(set-default 'cursor-type 'bar)
+
+;; -------------
 ;; Ibuffer mode
 ;;--------------
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (setq ibuffer-default-sorting-mode 'major-mode)
-
-
 
 ;; -----------------
 ;; Misc key mappings
@@ -68,28 +72,27 @@
 (global-set-key [f3] 'search-backward)
 (global-set-key [f2] 'replace-string)
 (global-set-key [f4] 'set-justification-full) ;JUSTIFY
-(global-set-key [f5] 'set-mark-command) ;MARK
+(global-set-key [f5] 'sr-speedbar-toggle) ;speedbar in frame toggle
 (global-set-key [f6] 'kill-ring-save)   ;COPY
 (global-set-key [f7] 'yank)             ;PASTE
 (global-set-key [f8] 'kill-region)      ;DELETE
-(global-set-key [f9] 'save-buffer)      ;SAVE
+;;(global-set-key [f9] 'save-buffer)      ;SAVE
 (global-set-key [C-f7] 'compile)        ;COMPILE
 (global-set-key [C-f1] 'eshell)         ;ESHELL
 (global-set-key "\C-ca" 'auto-fill-mode)
 (global-set-key "\C-cw" 'woman)         ;WOMAN
 (global-set-key [down-mouse-3] 'imenu)  ;imenu for latex headings
 
-
 ;; distracton free centre editing
-(global-set-key [C-f10]
-     (lambda ()
-     (interactive)
-     (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 30 30)))
+;; (global-set-key [C-f10]
+;;      (lambda ()
+;;      (interactive)
+;;      (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 30 30)))
 
-(global-set-key [C-f9]
-     (lambda ()
-     (interactive)
-     (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 0 0)))
+;; (global-set-key [C-f9]
+;;      (lambda ()
+;;      (interactive)
+;;      (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 0 0)))
 
 ;; 'y' for 'yes', 'n' for 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -124,6 +127,7 @@
 (setq reftex-plug-into-AUCTeX t)
 (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
 (add-hook 'reftex-mode-hook 'imenu-add-menubar-index)
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 ;; insert the tilde in front of cite automatically
 (setq reftex-format-cite-function 
@@ -187,16 +191,16 @@
      (setq svn-status-default-diff-arguments '("--diff-cmd" "colordiff" ))))
 (setq vc-svn-diff-switches '("-x --ignore-eol-style" "-x -w"))
 
-;; Python mode
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+;; jedi mode for autocomplete python
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 ;; Marmalade repos
 (require 'package)
+;; Any add to list for package-archives (to add marmalade or melpa) goes here, e.g.:
 (add-to-list 'package-archives 
-    '("marmalade" .
-      "http://marmalade-repo.org/packages/"))
+    '("melpa" .
+      "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
 ;; copy env path
@@ -207,3 +211,15 @@
 ;; load theme
 (load-theme 'twilight t)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(writeroom-width 100))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
