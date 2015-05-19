@@ -7,8 +7,6 @@
  ;; (getenv "PATH")))
 
 (add-to-list 'load-path "~/.emacs.d/elpa")
-;; bug patch for yas snippet loading until 24.3 gets to ubuntu
-(defalias 'cl-set-getf 'cl--set-getf)
 
 ;; -----------------------------
 ;; General Display Customisation
@@ -28,11 +26,7 @@
 (setq blink-matching-paren t)
 (setq blink-matching-delay .25)
 (setq-default fill-column 80)
-
-
-
-;; toggle full screen (works on emacs 24.3 for mac os x) 
-(global-set-key [C-f11] 'toggle-fullscreen)
+(setq scroll-preserve-screen-position t)
 
 
 ;; ----------------------
@@ -56,7 +50,7 @@
 ;; -------------
 ;; emacs cursor type
 ;; --------------
-(set-default 'cursor-type 'bar)
+(set-default 'cursor-type 'box)
 
 ;; -------------
 ;; Ibuffer mode
@@ -82,17 +76,6 @@
 (global-set-key "\C-ca" 'auto-fill-mode)
 (global-set-key "\C-cw" 'woman)         ;WOMAN
 (global-set-key [down-mouse-3] 'imenu)  ;imenu for latex headings
-
-;; distracton free centre editing
-;; (global-set-key [C-f10]
-;;      (lambda ()
-;;      (interactive)
-;;      (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 30 30)))
-
-;; (global-set-key [C-f9]
-;;      (lambda ()
-;;      (interactive)
-;;      (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 0 0)))
 
 ;; 'y' for 'yes', 'n' for 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -128,6 +111,10 @@
 (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
 (add-hook 'reftex-mode-hook 'imenu-add-menubar-index)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+(add-hook 'plain-TeX-mode-hook
+	  (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
+			  (cons "$" "$"))))
 
 ;; insert the tilde in front of cite automatically
 (setq reftex-format-cite-function 
@@ -170,8 +157,8 @@
 ;; IDO Mode enable
 ;; ----------------
 (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode 1)
+(setq ido-everywhere t)
+(ido-mode 1)
 
 ;;-- clear eshell buffer
 (defun eshell/clear ()
@@ -191,9 +178,6 @@
      (setq svn-status-default-diff-arguments '("--diff-cmd" "colordiff" ))))
 (setq vc-svn-diff-switches '("-x --ignore-eol-style" "-x -w"))
 
-;; jedi mode for autocomplete python
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
 
 ;; Marmalade repos
 (require 'package)
@@ -211,15 +195,3 @@
 ;; load theme
 (load-theme 'twilight t)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(writeroom-width 100))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
